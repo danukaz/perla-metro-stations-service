@@ -67,3 +67,35 @@ export const getStations = async (req, res) => {
         res.status(500).json({ error: 'Error en el servidor' });
     }
 };
+
+// Obtener estación por ID
+export const getStationById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [rows] = await pool.query(
+      `SELECT id, nombre, ubicacion, tipo, created_at, updated_at
+       FROM stations
+       WHERE id = ? AND deleted_at IS NULL`,
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Estación no encontrada" });
+    }
+
+    const station = rows[0];
+
+    // Si está inactiva, no devolvemos el estado
+    if (station.estado === "inactiva") {
+      const { estado, ...resto } = station;
+      return res.json(resto);
+    }
+
+    res.json(station);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+};
+

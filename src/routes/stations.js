@@ -1,5 +1,5 @@
 import express from "express";
-import { createStation, getStations } from "../controllers/stationsController.js";
+import { createStation, getStations, getStationById } from "../controllers/stationsController.js";
 
 const router = express.Router();
 
@@ -8,5 +8,8 @@ router.get("/", getStations);
 
 // Crear estación
 router.post("/", createStation);
+
+// Obtener estación por ID
+router.get("/:id", getStationById);
 
 export default router;
