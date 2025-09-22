@@ -1,12 +1,10 @@
 import express from "express";
-import { createStation } from "../controllers/stationsController.js";
+import { createStation, getStations } from "../controllers/stationsController.js";
 
 const router = express.Router();
 
-// Ruta de prueba (borrar luego!!)
-router.get("/", (req, res) => {
-  res.json({ message: "Stations Service funcionando 🚉" });
-});
+// Visualizar estaciones
+router.get("/", getStations);
 
 // Crear estación
 router.post("/", createStation);
