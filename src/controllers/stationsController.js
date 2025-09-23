@@ -55,11 +55,34 @@ export const createStation = async (req, res) => {
 // Obtener todas las estaciones activas
 export const getStations = async (req, res) => {
     try {
-        const [rows] = await pool.query(
-            `SELECT id, nombre, ubicacion, tipo, estado, created_at, updated_at
-            FROM stations 
-            WHERE deleted_at IS NULL`
-        );
+        const { nombre, tipo, estado } = req.query;
+
+        let query = `
+      SELECT id, nombre, ubicacion, tipo, estado, created_at, updated_at 
+      FROM stations 
+      WHERE deleted_at IS NULL
+    `;
+        const values = [];
+
+        // Filtro por nombre (coincidencia parcial)
+        if (nombre) {
+            query += " AND LOWER(nombre) LIKE ?";
+            values.push(`%${nombre.toLowerCase()}%`);
+        }
+
+        // Filtro por tipo
+        if (tipo) {
+            query += " AND tipo = ?";
+            values.push(tipo.toLowerCase());
+        }
+
+        // Filtro por estado
+        if (estado) {
+            query += " AND estado = ?";
+            values.push(estado.toLowerCase());
+        }
+
+        const [rows] = await pool.query(query, values);
 
         res.json(rows);
     } catch (error) {
