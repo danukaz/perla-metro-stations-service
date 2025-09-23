@@ -1,5 +1,5 @@
 import express from "express";
-import { createStation, getStations, getStationById, updateStation } from "../controllers/stationsController.js";
+import { createStation, getStations, getStationById, updateStation, deleteStation } from "../controllers/stationsController.js";
 
 const router = express.Router();
 
@@ -14,5 +14,8 @@ router.get("/:id", getStationById);
 
 // Editar estación
 router.put("/:id", updateStation);
+
+// Eliminar estación (soft delete)
+router.delete("/:id", deleteStation);
 
 export default router;

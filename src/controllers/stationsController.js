@@ -197,3 +197,33 @@ export const updateStation = async (req, res) => {
         res.status(500).json({ error: "Error en el servidor" });
     }
 };
+
+// Eliminar estación (soft delete)
+export const deleteStation = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Verificar que exista y no esté eliminada
+        const [rows] = await pool.query(
+            `SELECT * FROM stations WHERE id = ? AND deleted_at IS NULL`,
+            [id]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Estación no encontrada o ya eliminada" });
+        }
+
+        // Soft delete = marcar como inactiva y registrar deleted_at
+        await pool.query(
+            `UPDATE stations 
+            SET estado = 'inactiva', deleted_at = NOW() 
+            WHERE id = ?`,
+            [id]
+        );
+
+        res.json({ message: "Estación eliminada (soft delete) con éxito" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error en el servidor" });
+    }
+};
