@@ -171,6 +171,16 @@ GET /stations?nombre=Central&estado=activa
 
 ---
 
+## ☁️ Despliegue en la nube
+
+Para desplegar este servicio en la nube, puede utilizar [Render](https://render.com/), y conectarlo con su base de datos que puede desplegar gratuitamente utilizando [Railway](https://railway.com/).
+
+También puede desplegar el servicio localmente y sólo desplegar la base de datos en Railway.
+
+Al desplegar la base de datos en Railway, se le entregarán datos como la URL de conexión con la base de datos, estos datos debe colocarlos en el .env de su repositorio local o en las variables de entorno del sitio donde esté desplegando el Backend.
+
+---
+
 ## 👨‍💻 Autor
 
 * Daniel Alexis Tomigo Contreras - 21.564.036-1
